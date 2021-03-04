@@ -1,0 +1,19 @@
+{
+	"apiVersion": 2,
+	"name": "create-block/s2s-marketing-button",
+	"title": "S 2 S Marketing Button",
+	"category": "widgets",
+	"icon": "smiley",
+	"description": "Example block written with ESNext standard and JSX support – build step required.",
+	"textdomain": "s2s-marketing-button",
+	"supports": {
+		"color": {
+			"gradients": true
+		},
+		"align": [ "left", "center", "right" ],
+		"fontSize": true,
+	},
+	"editorScript": "file:./build/index.js",
+	"editorStyle": "file:./build/index.css",
+	"style": "file:./build/style-index.css"
+}
