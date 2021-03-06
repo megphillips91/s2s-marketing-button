@@ -11,28 +11,26 @@ import { __ } from '@wordpress/i18n';
  *
  * @see https://developer.wordpress.org/block-editor/packages/packages-block-editor/#useBlockProps
  */
-import { 
-	useBlockProps, 
+import {
+	useBlockProps,
 	InspectorControls,
-	ColorPalette, 
+	ColorPalette,
 	RichText,
     AlignmentToolbar,
     BlockControls,
+	Fragment,
 	} from '@wordpress/block-editor';
 
 import {
-	Panel,
 	PanelBody,
 	PanelRow,
-	ButtonGroup,
-	Button,
-	IconButton,
-	SelectControl,
 	ToggleControl,
 	TextControl,
-	Flex,
-	FlexItem,
+	SelectControl,
  } from '@wordpress/components';
+
+ import { useState } from '@wordpress/element';
+
 
 /**
  * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
@@ -41,6 +39,7 @@ import {
  * @see https://www.npmjs.com/package/@wordpress/scripts#using-css
  */
 import './editor.scss';
+
 
 /**
  * The edit function describes the structure of your block in the context of the
@@ -51,6 +50,7 @@ import './editor.scss';
  * @return {WPElement} Element to render.
  */
 export default function Edit( {attributes, setAttributes} ) {
+	const [textColor, setTextColor] = useState(attributes.textColor);
 
 	function onChangeCallToAction( newValue ) {
 		setAttributes( { callToAction: newValue } );
@@ -58,6 +58,17 @@ export default function Edit( {attributes, setAttributes} ) {
 
 	function onChangeAlignment( newValue ) {
 		setAttributes( { alignment: newValue } );
+		switch (newValue){
+			case 'center':
+				setAttributes( { justifyContent: 'center' } );
+				break;
+			case 'left':
+				setAttributes( { justifyContent: 'flex-start' } );
+				break;
+			case 'right':
+				setAttributes( { justifyContent: 'flex-end' } );
+				break;
+		}
 	}
 
 	function onChangeButtonSubtitle( newValue ) {
@@ -68,81 +79,131 @@ export default function Edit( {attributes, setAttributes} ) {
 		setAttributes( { href: newValue } );
 	}
 
-	function onChangeButtonColor( newValue ) {
-		setAttributes( { buttonColor: newValue } );
+	function onChangebackgroundColor( newValue ) {
+		setAttributes( { backgroundColor: newValue } );
+		let style = {
+			display: "inline-block",
+			border: '2px solid #ccc',
+			borderColor: attributes.wrapperStyle.borderColor,
+			background: newValue
+		}
+		setAttributes( { wrapperStyle: style } );
 	}
 
-	function onChangeButtonTextColor( newValue ) {
-		setAttributes( { buttonTextColor: newValue } );
+	function onChangeGradientColor( newValue ) {
+		setAttributes( { gradientColor: newValue } );
+		console.log(newValue);
+		if(newValue !== 'undefined'){
+			let wrapperStyle = attributes.wrapperStyle;
+			wrapperStyle.background = "linear-gradient("+newValue+", "+attributes.backgroundColor+")";
+			setAttributes( { wrapperStyle: wrapperStyle } );
+			console.log(attributes);
+		} else {
+			let wrapperStyle = attributes.wrapperStyle;
+			wrapperStyle.background = attributes.backgroundColor;
+			setAttributes( { wrapperStyle: wrapperStyle } );
+		}
+	}
+
+	function onChangetextColor( newValue ) {
+		setAttributes( { selectedTextColor: newValue} );
+		let style = {color: newValue}
+		setAttributes( { textColor: style } );
+		setAttributes( { pTextColor: style } );
+		//border color
+		let divStyle = {
+			display: "inline-block",
+			border: '2px solid #ccc',
+			borderColor: newValue,
+			background: attributes.wrapperStyle.background
+		}
+		setAttributes( { wrapperStyle: divStyle } );
 	}
 
 	return (
-		<div { ...useBlockProps() } >
-
+		<div { ...useBlockProps() }
+			style={{
+				justifyContent: attributes.justifyContent
+			}}
+		 >
 			<InspectorControls>
-					<PanelBody 
-						title={ __( 'Marketing Button Design' ) }
-						initialOpen={ false}
-						>
-						<PanelRow>
-						<TextControl
-							label={ __( 'Call to action' ) }
-							value={attributes.callToAction}
-							onChange ={ onChangeCallToAction }
+			<PanelBody
+					title={ __( 'Text' ) }
+					initialOpen={true}
+					>
+					<PanelRow>
+						<p>{__('Color')}</p>
+					</PanelRow>
+					<PanelRow>
+						<ColorPalette
+						value={ attributes.textColor }
+						onChange={ onChangetextColor }
 						/>
-						</PanelRow>
-						<PanelRow>
+					</PanelRow>
+					<PanelRow>
+						<p>{__('Link')}</p>
+					</PanelRow>
+					<PanelRow>
 						<TextControl
-							label={ __( 'Button Subtitle' ) }
-							value={attributes.buttonSubtitle}
-							onChange ={ onChangeButtonSubtitle }
+							value = {attributes.href}
+							onChange = { onChangeButtonLink }
+							>
+						</TextControl>
+					</PanelRow>
+
+			</PanelBody>
+			 <PanelBody
+					title={ __( 'Button' ) }
+					initialOpen={true}
+					>
+					<PanelRow>
+						<p>{__('Background Color')}</p>
+					</PanelRow>
+					<PanelRow>
+						<ColorPalette
+						value={ attributes.backgroundColor }
+						onChange={ onChangebackgroundColor }
 						/>
-						</PanelRow>
-						<PanelRow>
-						<TextControl
-							label={ __( 'Button Link' ) }
-							value={attributes.href}
-							onChange ={ onChangeButtonLink }
+					</PanelRow>
+					<PanelRow>
+						<p>{__('Gradient')}</p>
+					</PanelRow>
+					<PanelRow>
+						<ColorPalette
+						value={ attributes.gradientColor }
+						onChange={ onChangeGradientColor }
 						/>
-						</PanelRow>
-						<PanelRow>
-						<p>{__('Button Color')}</p>
-						</PanelRow>
-						<PanelRow>
-							<ColorPalette
-							value={ attributes.buttonColor }
-							onChange={ onChangeButtonColor }
-							/>
-						</PanelRow>
-						<PanelRow>
-							<p>{__('Button Text Color')}</p>
-						</PanelRow>
-						<PanelRow>
-							<ColorPalette
-							value={ attributes.buttonTextColor }
-							onChange={ onChangeButtonTextColor }
-							/>
-						</PanelRow>
-					</PanelBody>
+					</PanelRow>
+				</PanelBody>
 				</InspectorControls>
-				<a href={attributes.href} style={{color: attributes.buttonTextColor}} >
-					<div class="s2s-button-wrapper" style={{background: attributes.buttonColor}}>
-					{
-						<BlockControls>
-							<AlignmentToolbar
-								value={ attributes.alignment }
-								onChange={ onChangeAlignment }
-							/>
-						</BlockControls>
-					}
-					<RichText
-						style={ { textAlign: alignment } }
-						tagName="p"
-						onChange={ onChangeCallToAction }
-						value={ attributes.callToAction }
+			 {
+				<BlockControls>
+					<AlignmentToolbar
+						value={ attributes.alignment }
+						onChange={ onChangeAlignment }
 					/>
-					</div>
-				</a>
+				</BlockControls>
+                }
+				<div
+					className="s2s-marketing-button-wrapper"
+					style={attributes.wrapperStyle}
+					>
+				<RichText
+					tagName="h3"
+					onChange={ onChangeCallToAction }
+					placeholder={ __( 'I want one' ) }
+					value={attributes.callToAction}
+					style={attributes.textColor}
+				/>
+				<RichText
+					tagName="p"
+					className="s2s-marketing-button-subtitle"
+					onChange={ onChangeButtonSubtitle }
+					placeholder={ __( 'so how much?' ) }
+					value={attributes.buttonSubtitle}
+					style={attributes.pTextColor}
+				/>
+				</div>
 		</div>
 	);
 }

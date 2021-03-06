@@ -6,9 +6,32 @@
  */
 
 .wp-block-create-block-s2s-marketing-button {
-	
+	display: flex;
+	width: 100%;
 }
 
-.wp-block-create-block-s2s-marketing-button div{
+.wp-block-create-block-s2s-marketing-button .s2s-marketing-button-wrapper{
 	display: inline-block;
+	padding: 10px 20px;
+	border-width: 2px;
+	border-radius: 4px;
+	text-align: center;
 }
+
+.wp-block-create-block-s2s-marketing-button h3, .wp-block-create-block-s2s-marketing-button  p {
+	margin: 0;
+	padding: 0;
+	text-shadow: 1px 1px 1px #808284;
+	margin-block-start: 0;
+    margin-block-end: 0;
+}
+
+.wp-block-create-block-s2s-marketing-button h3 {
+	font-size: 24px;
+}
+
+.wp-block-create-block-s2s-marketing-button  p {
+	font-weight: normal;
+}
+
+

@@ -1,36 +1,74 @@
 const attributes = {
-	buttonColor: {
+	alignment: {
 		type: 'string',
-		default: ''
+		default: 'center'
 	},
-	buttonTextColor: {
+	justifyContent: {
 		type: 'string',
-		default: ''
+		default: 'center'
+	},
+	wrapperStyle: {
+		type: 'object',
+		default: {
+			display: "inline-block",
+			border: '2px solid #ccc',
+			borderColor: '#333',
+			background: '#eeeeee'
+		},
+		selector: 'div.s2s-marketing-button-wrapper',
+		attribute: 'style',
+	},
+	backgroundColor: {
+		type: 'string',
+		default: '#eeeeee'
+	},
+	selectedTextColor: {
+		type: 'string',
+		default: '#eeeeee'
+	},
+	textColor: {
+		type: 'object',
+		default: {
+			color: "#333"
+		},
+		selector: '.s2s-marketing-button-wrapper h3',
+		attribute: 'style'
+
+	},
+	pTextColor: {
+		type: 'object',
+		default: {
+			color: "#333"
+		},
+		selector: '.s2s-marketing-button-wrapper p',
+		attribute: 'style'
+
+	},
+	borderColor: {
+		type: 'string',
+		default: '#ccc'
 	},
 	callToAction: {
 			"type": "string",
-			"source": "html",
-			"selector": "h3",
-			"attribute": "text",
-			"default": "I want one"
-
+			"selecttor": "h3",
+			"attribute": "text"
 		},
     buttonSubtitle: {
 			"type": "string",
-			"source": "html",
 			"selector": "p",
-			"attribute": "text",
-			"default": "so how much?"
+			"attribute": "text"
 		},
 	href: {
 		"type": "string",
-		"source": "html",
 		"selector": "a",
-		"attribute": "href"
+		attribute: "href"
 	},
-	borderRadius: {
-			"type": "number"
-		},
+	gradientColor: {
+		type: "string",
+		default: 'none'
+	} //  background-image: linear-gradient(topcolor, bottomcolor);
+
+
 }
 
 export default attributes;

@@ -24,10 +24,27 @@ import { useBlockProps } from '@wordpress/block-editor';
  * @return {WPElement} Element to render.
  */
 export default function save( {attributes} ) {
+
+
 	return (
-		<div { ...useBlockProps.save() }>
-			<h3>{attributes.callToAction}</h3>
-			<p>{attributes.buttonSubtitle}</p>
+		<div { ...useBlockProps.save() }
+			style={{
+				justifyContent: attributes.justifyContent
+			}}
+		>
+			<a href={attributes.href}>
+			<div
+					className="s2s-marketing-button-wrapper"
+					style={attributes.wrapperStyle}
+					>
+						<h3 style={attributes.textColor}>
+							{attributes.callToAction}
+						</h3>
+						<p style={attributes.pTextColor}>
+							{attributes.buttonSubtitle}
+						</p>
+				</div>
+			</a>
 		</div>
 	);
 }
